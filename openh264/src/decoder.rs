@@ -185,8 +185,8 @@ impl Decoder {
 
         unsafe {
             self.raw_api
-                .decode_frame_no_delay(packet.as_ptr(), packet.len() as i32, &mut dst as *mut _, &mut buffer_info)
-                .ok()?;
+                  .decode_frame2(packet.as_ptr(), packet.len() as i32, &mut dst as *mut _, &mut buffer_info)
+                  .ok()?;
 
             // Buffer status == 0 means frame data is not ready.
             if buffer_info.iBufferStatus == 0 {
@@ -202,11 +202,11 @@ impl Decoder {
                 if num_frames > 0 {
                     self.raw_api().flush_frame(&mut dst as *mut _, &mut buffer_info).ok()?;
 
-                    if buffer_info.iBufferStatus == 0 {
-                        return Err(Error::msg(
-                            "Buffer status invalid, we have outstanding frames but failed to flush them.",
-                        ));
-                    }
+                  //  if buffer_info.iBufferStatus == 0 {
+                  //      return Err(Error::msg(
+                  //          "Buffer status invalid, we have outstanding frames but failed to flush them.",
+                  //      ));
+                  //  }
                 }
             }
 
